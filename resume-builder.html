@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS-Friendly Resume Builder | Portfolio Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --gray-color: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        .template-header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .template-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .btn-add {
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 10px;
+        }
+        
+        .btn-add:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Main Content Layout */
+        .resume-container {
+            display: flex;
+            margin: 30px 0;
+            gap: 30px;
+        }
+        
+        .editor-sidebar {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .resume-preview {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 80px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-section h3 i {
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Skills Styles */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .skill-tag {
+            background-color: var(--light-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .skill-tag .remove-skill {
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .add-skill-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .add-skill-container input {
+            flex: 1;
+        }
+        
+        /* Experience/Education/Project Items */
+        .experience-item,
+        .education-item,
+        .project-item,
+        .certification-item,
+        .achievement-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .remove-item {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--danger-color);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+        }
+        
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* Resume Preview Styles */
+        .resume-template {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .resume-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .resume-header h1 {
+            font-size: 28px;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .resume-header h2 {
+            font-size: 18px;
+            color: var(--gray-color);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+        
+        .contact-info p {
+            margin: 0;
+        }
+        
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .resume-section {
+            margin-bottom: 20px;
+        }
+        
+        .resume-section h2 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .experience-item h3,
+        .education-item h3,
+        .project-item h3,
+        .certification-item h3,
+        .achievement-item h3 {
+            font-size: 18px;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .experience-item h4,
+        .education-item h4,
+        .project-item h4,
+        .certification-item h4,
+        .achievement-item h4 {
+            font-size: 14px;
+            color: var(--gray-color);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .experience-item ul,
+        .project-item ul {
+            padding-left: 20px;
+        }
+        
+        .experience-item li,
+        .project-item li {
+            margin-bottom: 5px;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .skills-column {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .skills-column ul {
+            list-style: none;
+        }
+        
+        .skills-column li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .skills-column li:before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Profile Picture */
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin: 0 auto;
+        }
+        
+        .upload-btn {
+            margin-top: 10px;
+        }
+        
+        /* Footer Styles */
+        .template-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .template-footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .template-footer p {
+            margin: 0;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .resume-container {
+                flex-direction: column;
+            }
+            
+            .resume-preview {
+                position: static;
+                margin-top: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .template-header .container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="template-header">
+        <div class="container">
+            <h1 class="logo">PortfolioGen</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#templates" class="btn btn-secondary">Portfolio Templates</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="resume-container">
+        <div class="editor-sidebar">
+            <h2>Build Your ATS-Friendly Resume</h2>
+            
+            <!-- Profile Picture Upload -->
+            <div class="form-section">
+                <h3><i class="fas fa-camera"></i> Profile Picture</h3>
+                <div class="profile-pic-container">
+                    <img id="profilePicPreview" src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
+                    <input type="file" id="profilePicUpload" accept="image/*" style="display: none;">
+                    <button class="btn btn-secondary upload-btn" onclick="document.getElementById('profilePicUpload').click()">Upload Photo</button>
+                </div>
+            </div>
+            
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="form-group">
+                    <label for="resumeName">Full Name</label>
+                    <input type="text" id="resumeName" value="Alex Johnson" oninput="updatePreview('resumeName', 'previewResumeName')">
+                </div>
+                <div class="form-group">
+                    <label for="resumeTitle">Professional Title</label>
+                    <input type="text" id="resumeTitle" value="Computer Science Student" oninput="updatePreview('resumeTitle', 'previewResumeTitle')">
+                </div>
+                <div class="form-group">
+                    <label for="resumeEmail">Email</label>
+                    <input type="email" id="resumeEmail" value="alex.johnson@example.com" oninput="updatePreview('resumeEmail', 'previewResumeEmail', true)">
+                </div>
+                <div class="form-group">
+                    <label for="resumePhone">Phone</label>
+                    <input type="tel" id="resumePhone" value="(123) 456-7890" oninput="updatePreview('resumePhone', 'previewResumePhone', true)">
+                </div>
+                <div class="form-group">
+                    <label for="resumeAddress">Address</label>
+                    <input type="text" id="resumeAddress" value="123 University Ave, College Town, ST 12345" oninput="updatePreview('resumeAddress', 'previewResumeAddress')">
+                </div>
+                <div class="form-group">
+                    <label for="resumeLinkedIn">LinkedIn URL</label>
+                    <input type="url" id="resumeLinkedIn" value="linkedin.com/in/alexjohnson" oninput="updatePreview('resumeLinkedIn', 'previewResumeLinkedIn', true)">
+                </div>
+                <div class="form-group">
+                    <label for="resumeGitHub">GitHub URL</label>
+                    <input type="url" id="resumeGitHub" value="github.com/alexjohnson" oninput="updatePreview('resumeGitHub', 'previewResumeGitHub', true)">
+                </div>
+                <div class="form-group">
+                    <label for="resumeWebsite">Personal Website/Portfolio</label>
+                    <input type="url" id="resumeWebsite" placeholder="yourwebsite.com" oninput="updatePreview('resumeWebsite', 'previewResumeWebsite', true)">
+                </div>
+                <div class="form-group">
+                    <label for="resumeSummary">Professional Summary</label>
+                    <textarea id="resumeSummary" oninput="updatePreview('resumeSummary', 'previewResumeSummary')">Motivated Computer Science student with a 3.8 GPA seeking internship opportunities to apply web development and machine learning skills. Experienced in JavaScript, Python, and React with a strong foundation in data structures and algorithms. Proven ability to work in team environments through academic projects and previous internship experience.</textarea>
+                </div>
+            </div>
+
+            <!-- Work Experience -->
+            <div class="form-section">
+                <h3><i class="fas fa-briefcase"></i> Work Experience</h3>
+                <div id="experienceContainer">
+                    <div class="experience-item">
+                        <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label>Job Title</label>
+                            <input type="text" value="Web Development Intern" oninput="updateExperiencePreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" value="Tech Solutions Inc." oninput="updateExperiencePreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" value="San Francisco, CA" oninput="updateExperiencePreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Dates</label>
+                            <input type="text" value="June 2022 - August 2022" oninput="updateExperiencePreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea oninput="updateExperiencePreview(this)">- Developed and maintained company websites using React and Node.js
+- Implemented new features that improved user engagement by 25%
+- Collaborated with cross-functional teams using Agile methodologies
+- Conducted code reviews and participated in sprint planning</textarea>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-small btn-add" onclick="addExperience()">Add Experience</button>
+            </div>
+
+            <!-- Education -->
+            <div class="form-section">
+                <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div id="educationContainer">
+                    <div class="education-item">
+                        <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label>Degree</label>
+                            <input type="text" value="Bachelor of Science in Computer Science" oninput="updateEducationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>University</label>
+                            <input type="text" value="State University" oninput="updateEducationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" value="College Town, ST" oninput="updateEducationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Dates</label>
+                            <input type="text" value="August 2019 - May 2023" oninput="updateEducationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>GPA</label>
+                            <input type="text" value="3.8/4.0" oninput="updateEducationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Relevant Coursework</label>
+                            <textarea oninput="updateEducationPreview(this)">Data Structures, Algorithms, Web Development, Database Systems, Machine Learning, Software Engineering, Computer Networks</textarea>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-small btn-add" onclick="addEducation()">Add Education</button>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-section">
+                <h3><i class="fas fa-code"></i> Skills</h3>
+                <div class="skills-container" id="skillsContainer">
+                    <div class="skill-tag">
+                        JavaScript <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        Python <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        React <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        Node.js <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        HTML/CSS <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        MongoDB <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        Git <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                    <div class="skill-tag">
+                        Agile Methodologies <span class="remove-skill" onclick="removeSkill(this)">×</span>
+                    </div>
+                </div>
+                <div class="add-skill-container">
+                    <input type="text" id="newSkill" placeholder="Add new skill">
+                    <button class="btn btn-small" onclick="addSkill()">Add</button>
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="form-section">
+                <h3><i class="fas fa-project-diagram"></i> Projects</h3>
+                <div id="projectsContainer">
+                    <div class="project-item">
+                        <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <input type="text" value="E-commerce Website" oninput="updateProjectPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Technologies</label>
+                            <input type="text" value="React, Node.js, MongoDB" oninput="updateProjectPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Project URL (optional)</label>
+                            <input type="url" placeholder="https://example.com/project" oninput="updateProjectPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea oninput="updateProjectPreview(this)">- Developed a full-stack e-commerce platform with user authentication
+- Implemented product catalog, shopping cart, and payment integration
+- Optimized performance resulting in 30% faster page load times
+- Deployed using AWS EC2 and S3</textarea>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-small btn-add" onclick="addProject()">Add Project</button>
+            </div>
+
+            <!-- Certifications -->
+            <div class="form-section">
+                <h3><i class="fas fa-certificate"></i> Certifications</h3>
+                <div id="certificationsContainer">
+                    <div class="certification-item">
+                        <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label>Certification</label>
+                            <input type="text" value="AWS Certified Developer" oninput="updateCertificationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Issuing Organization</label>
+                            <input type="text" value="Amazon Web Services" oninput="updateCertificationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Date Earned</label>
+                            <input type="text" value="July 2022" oninput="updateCertificationPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Certificate URL (optional)</label>
+                            <input type="url" placeholder="https://example.com/certificate" oninput="updateCertificationPreview(this)">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-small btn-add" onclick="addCertification()">Add Certification</button>
+            </div>
+
+            <!-- Achievements -->
+            <div class="form-section">
+                <h3><i class="fas fa-trophy"></i> Achievements</h3>
+                <div id="achievementsContainer">
+                    <div class="achievement-item">
+                        <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                        <div class="form-group">
+                            <label>Achievement</label>
+                            <input type="text" value="Dean's List" oninput="updateAchievementPreview(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="text" value="All Semesters 2019-2023" oninput="updateAchievementPreview(this)">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-small btn-add" onclick="addAchievement()">Add Achievement</button>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button class="btn btn-primary" id="saveResume">Save Resume</button>
+                <button class="btn btn-secondary" id="downloadResume">Download as PDF</button>
+                <button class="btn btn-secondary" id="analyzeResume">Analyze ATS Score</button>
+                <button class="btn btn-secondary" id="shareResume">Share Link</button>
+            </div>
+        </div>
+
+        <!-- Resume Preview -->
+        <div class="resume-preview">
+            <div class="resume-template">
+                <div class="profile-pic-container">
+                    <img id="previewProfilePic" src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-pic">
+                </div>
+                
+                <div class="resume-header">
+                    <h1 id="previewResumeName">Alex Johnson</h1>
+                    <h2 id="previewResumeTitle">Computer Science Student</h2>
+                    <div class="contact-info">
+                        <p><a href="mailto:alex.johnson@example.com" id="previewResumeEmail">alex.johnson@example.com</a></p>
+                        <p><a href="tel:1234567890" id="previewResumePhone">(123) 456-7890</a></p>
+                        <p id="previewResumeAddress">123 University Ave, College Town, ST 12345</p>
+                        <p><a href="https://linkedin.com/in/alexjohnson" target="_blank" id="previewResumeLinkedIn">linkedin.com/in/alexjohnson</a></p>
+                        <p><a href="https://github.com/alexjohnson" target="_blank" id="previewResumeGitHub">github.com/alexjohnson</a></p>
+                        <p><a href="#" target="_blank" id="previewResumeWebsite" style="display: none;"></a></p>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Professional Summary</h2>
+                    <p id="previewResumeSummary">Motivated Computer Science student with a 3.8 GPA seeking internship opportunities to apply web development and machine learning skills. Experienced in JavaScript, Python, and React with a strong foundation in data structures and algorithms. Proven ability to work in team environments through academic projects and previous internship experience.</p>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Work Experience</h2>
+                    <div class="experience-list" id="previewResumeExperience">
+                        <div class="experience-item">
+                            <h3>Web Development Intern</h3>
+                            <h4>Tech Solutions Inc., San Francisco, CA | June 2022 - August 2022</h4>
+                            <ul>
+                                <li>Developed and maintained company websites using React and Node.js</li>
+                                <li>Implemented new features that improved user engagement by 25%</li>
+                                <li>Collaborated with cross-functional teams using Agile methodologies</li>
+                                <li>Conducted code reviews and participated in sprint planning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Education</h2>
+                    <div class="education-list" id="previewResumeEducation">
+                        <div class="education-item">
+                            <h3>Bachelor of Science in Computer Science</h3>
+                            <h4>State University, College Town, ST | August 2019 - May 2023</h4>
+                            <p>GPA: 3.8/4.0</p>
+                            <p>Relevant Coursework: Data Structures, Algorithms, Web Development, Database Systems, Machine Learning, Software Engineering, Computer Networks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Skills</h2>
+                    <div class="skills-list" id="previewResumeSkills">
+                        <div class="skills-column">
+                            <ul>
+                                <li>JavaScript</li>
+                                <li>Python</li>
+                                <li>React</li>
+                                <li>Node.js</li>
+                            </ul>
+                        </div>
+                        <div class="skills-column">
+                            <ul>
+                                <li>HTML/CSS</li>
+                                <li>MongoDB</li>
+                                <li>Git</li>
+                                <li>Agile Methodologies</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Projects</h2>
+                    <div class="projects-list" id="previewResumeProjects">
+                        <div class="project-item">
+                            <h3>E-commerce Website</h3>
+                            <h4>React, Node.js, MongoDB</h4>
+                            <ul>
+                                <li>Developed a full-stack e-commerce platform with user authentication</li>
+                                <li>Implemented product catalog, shopping cart, and payment integration</li>
+                                <li>Optimized performance resulting in 30% faster page load times</li>
+                                <li>Deployed using AWS EC2 and S3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Certifications</h2>
+                    <div class="certifications-list" id="previewResumeCertifications">
+                        <div class="certification-item">
+                            <h3>AWS Certified Developer</h3>
+                            <h4>Amazon Web Services | July 2022</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-section">
+                    <h2>Achievements</h2>
+                    <div class="achievements-list" id="previewResumeAchievements">
+                        <div class="achievement-item">
+                            <h3>Dean's List</h3>
+                            <h4>All Semesters 2019-2023</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="template-footer">
+        <div class="container">
+            <p>&copy; 2023 PortfolioGen. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Profile Picture Upload
+        document.getElementById('profilePicUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profilePicPreview').src = event.target.result;
+                    document.getElementById('previewProfilePic').src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update Preview Functions
+        function updatePreview(inputId, previewId, isLink = false) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            if (input && preview) {
+                if (isLink && input.value) {
+                    if (inputId === 'resumeEmail') {
+                        preview.innerHTML = `<a href="mailto:${input.value}">${input.value}</a>`;
+                    } else if (inputId === 'resumePhone') {
+                        preview.innerHTML = `<a href="tel:${input.value.replace(/\D/g, '')}">${input.value}</a>`;
+                    } else {
+                        // Ensure the URL has https://
+                        let url = input.value;
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        preview.innerHTML = `<a href="${url}" target="_blank">${input.value}</a>`;
+                    }
+                } else {
+                    preview.textContent = input.value;
+                    
+                    // Show/hide website link based on input
+                    if (inputId === 'resumeWebsite') {
+                        preview.style.display = input.value ? 'block' : 'none';
+                        preview.href = input.value ? (input.value.startsWith('http') ? input.value : 'https://' + input.value) : '#';
+                        preview.textContent = input.value;
+                    }
+                }
+            }
+        }
+
+        // Update Experience Preview
+        function updateExperiencePreview(input) {
+            const experienceItem = input.closest('.experience-item');
+            const previewContainer = document.getElementById('previewResumeExperience');
+            
+            if (experienceItem && previewContainer) {
+                const title = experienceItem.querySelector('input[type="text"]').value;
+                const company = experienceItem.querySelectorAll('input[type="text"]')[1].value;
+                const location = experienceItem.querySelectorAll('input[type="text"]')[2].value;
+                const dates = experienceItem.querySelectorAll('input[type="text"]')[3].value;
+                const description = experienceItem.querySelector('textarea').value;
+                
+                const html = `
+                    <div class="experience-item">
+                        <h3>${title || 'Job Title'}</h3>
+                        <h4>${company || 'Company'}, ${location || 'Location'} | ${dates || 'Dates'}</h4>
+                        <ul>
+                            ${description.split('\n').filter(line => line.trim()).map(line => `<li>${line.trim().replace(/^- /, '')}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                previewContainer.innerHTML = html;
+            }
+        }
+
+        // Update Education Preview
+        function updateEducationPreview(input) {
+            const educationItem = input.closest('.education-item');
+            const previewContainer = document.getElementById('previewResumeEducation');
+            
+            if (educationItem && previewContainer) {
+                const degree = educationItem.querySelector('input[type="text"]').value;
+                const university = educationItem.querySelectorAll('input[type="text"]')[1].value;
+                const location = educationItem.querySelectorAll('input[type="text"]')[2].value;
+                const dates = educationItem.querySelectorAll('input[type="text"]')[3].value;
+                const gpa = educationItem.querySelectorAll('input[type="text"]')[4].value;
+                const coursework = educationItem.querySelector('textarea').value;
+                
+                const html = `
+                    <div class="education-item">
+                        <h3>${degree || 'Degree'}</h3>
+                        <h4>${university || 'University'}, ${location || 'Location'} | ${dates || 'Dates'}</h4>
+                        ${gpa ? `<p>GPA: ${gpa}</p>` : ''}
+                        ${coursework ? `<p>Relevant Coursework: ${coursework}</p>` : ''}
+                    </div>
+                `;
+                
+                previewContainer.innerHTML = html;
+            }
+        }
+
+        // Update Project Preview
+        function updateProjectPreview(input) {
+            const projectItem = input.closest('.project-item');
+            const previewContainer = document.getElementById('previewResumeProjects');
+            
+            if (projectItem && previewContainer) {
+                const name = projectItem.querySelector('input[type="text"]').value;
+                const technologies = projectItem.querySelectorAll('input[type="text"]')[1].value;
+                const url = projectItem.querySelector('input[type="url"]').value;
+                const description = projectItem.querySelector('textarea').value;
+                
+                const projectTitle = url ? 
+                    `<a href="${url.startsWith('http') ? url : 'https://' + url}" target="_blank">${name || 'Project Name'}</a>` : 
+                    (name || 'Project Name');
+                
+                const html = `
+                    <div class="project-item">
+                        <h3>${projectTitle}</h3>
+                        <h4>${technologies || 'Technologies'}</h4>
+                        <ul>
+                            ${description.split('\n').filter(line => line.trim()).map(line => `<li>${line.trim().replace(/^- /, '')}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                previewContainer.innerHTML = html;
+            }
+        }
+
+        // Update Certification Preview
+        function updateCertificationPreview(input) {
+            const certificationItem = input.closest('.certification-item');
+            const previewContainer = document.getElementById('previewResumeCertifications');
+            
+            if (certificationItem && previewContainer) {
+                const name = certificationItem.querySelector('input[type="text"]').value;
+                const organization = certificationItem.querySelectorAll('input[type="text"]')[1].value;
+                const date = certificationItem.querySelectorAll('input[type="text"]')[2].value;
+                const url = certificationItem.querySelector('input[type="url"]').value;
+                
+                const certificationTitle = url ? 
+                    `<a href="${url.startsWith('http') ? url : 'https://' + url}" target="_blank">${name || 'Certification'}</a>` : 
+                    (name || 'Certification');
+                
+                const html = `
+                    <div class="certification-item">
+                        <h3>${certificationTitle}</h3>
+                        <h4>${organization || 'Organization'} | ${date || 'Date'}</h4>
+                    </div>
+                `;
+                
+                previewContainer.innerHTML = html;
+            }
+        }
+
+        // Update Achievement Preview
+        function updateAchievementPreview(input) {
+            const achievementItem = input.closest('.achievement-item');
+            const previewContainer = document.getElementById('previewResumeAchievements');
+            
+            if (achievementItem && previewContainer) {
+                const name = achievementItem.querySelector('input[type="text"]').value;
+                const date = achievementItem.querySelectorAll('input[type="text"]')[1].value;
+                
+                const html = `
+                    <div class="achievement-item">
+                        <h3>${name || 'Achievement'}</h3>
+                        ${date ? `<h4>${date}</h4>` : ''}
+                    </div>
+                `;
+                
+                previewContainer.innerHTML = html;
+            }
+        }
+
+        // Add/Remove Skills
+        function addSkill() {
+            const skillInput = document.getElementById('newSkill');
+            const skill = skillInput.value.trim();
+            
+            if (skill) {
+                const skillsContainer = document.getElementById('skillsContainer');
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `${skill} <span class="remove-skill" onclick="removeSkill(this)">×</span>`;
+                skillsContainer.appendChild(skillTag);
+                
+                // Update skills preview
+                updateSkillsPreview();
+                
+                skillInput.value = '';
+            }
+        }
+        
+        function removeSkill(element) {
+            element.parentElement.remove();
+            updateSkillsPreview();
+        }
+        
+        function updateSkillsPreview() {
+            const skillsContainer = document.getElementById('skillsContainer');
+            const skills = Array.from(skillsContainer.querySelectorAll('.skill-tag')).map(tag => 
+                tag.textContent.replace('×', '').trim()
+            );
+            
+            const previewContainer = document.getElementById('previewResumeSkills');
+            const half = Math.ceil(skills.length / 2);
+            
+            const html = `
+                <div class="skills-column">
+                    <ul>
+                        ${skills.slice(0, half).map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="skills-column">
+                    <ul>
+                        ${skills.slice(half).map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            previewContainer.innerHTML = html;
+        }
+        
+        // Add/Remove Items
+        function addExperience() {
+            const container = document.getElementById('experienceContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'experience-item';
+            newItem.innerHTML = `
+                <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" placeholder="Job Title" oninput="updateExperiencePreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" placeholder="Company Name" oninput="updateExperiencePreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" placeholder="Location" oninput="updateExperiencePreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Dates</label>
+                    <input type="text" placeholder="Month Year - Month Year" oninput="updateExperiencePreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea placeholder="- Description point 1\n- Description point 2" oninput="updateExperiencePreview(this)"></textarea>
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+        
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'education-item';
+            newItem.innerHTML = `
+                <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label>Degree</label>
+                    <input type="text" placeholder="Degree Name" oninput="updateEducationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>University</label>
+                    <input type="text" placeholder="University Name" oninput="updateEducationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" placeholder="Location" oninput="updateEducationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Dates</label>
+                    <input type="text" placeholder="Month Year - Month Year" oninput="updateEducationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>GPA</label>
+                    <input type="text" placeholder="GPA (optional)" oninput="updateEducationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Relevant Coursework</label>
+                    <textarea placeholder="Course 1, Course 2, Course 3" oninput="updateEducationPreview(this)"></textarea>
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+        
+        function addProject() {
+            const container = document.getElementById('projectsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'project-item';
+            newItem.innerHTML = `
+                <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" placeholder="Project Name" oninput="updateProjectPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Technologies</label>
+                    <input type="text" placeholder="Technologies Used" oninput="updateProjectPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Project URL (optional)</label>
+                    <input type="url" placeholder="https://example.com/project" oninput="updateProjectPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea placeholder="- Description point 1\n- Description point 2" oninput="updateProjectPreview(this)"></textarea>
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+        
+        function addCertification() {
+            const container = document.getElementById('certificationsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'certification-item';
+            newItem.innerHTML = `
+                <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label>Certification</label>
+                    <input type="text" placeholder="Certification Name" oninput="updateCertificationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Issuing Organization</label>
+                    <input type="text" placeholder="Organization Name" oninput="updateCertificationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Date Earned</label>
+                    <input type="text" placeholder="Month Year" oninput="updateCertificationPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Certificate URL (optional)</label>
+                    <input type="url" placeholder="https://example.com/certificate" oninput="updateCertificationPreview(this)">
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+        
+        function addAchievement() {
+            const container = document.getElementById('achievementsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'achievement-item';
+            newItem.innerHTML = `
+                <button class="remove-item" onclick="removeItem(this)"><i class="fas fa-times"></i></button>
+                <div class="form-group">
+                    <label>Achievement</label>
+                    <input type="text" placeholder="Achievement Name" oninput="updateAchievementPreview(this)">
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" placeholder="Date (optional)" oninput="updateAchievementPreview(this)">
+                </div>
+            `;
+            container.appendChild(newItem);
+        }
+        
+        function removeItem(element) {
+            element.closest('.experience-item, .education-item, .project-item, .certification-item, .achievement-item').remove();
+            
+            // Update the corresponding preview section
+            if (element.closest('.experience-item')) {
+                updateExperiencePreview(element);
+            } else if (element.closest('.education-item')) {
+                updateEducationPreview(element);
+            } else if (element.closest('.project-item')) {
+                updateProjectPreview(element);
+            } else if (element.closest('.certification-item')) {
+                updateCertificationPreview(element);
+            } else if (element.closest('.achievement-item')) {
+                updateAchievementPreview(element);
+            }
+        }
+        
+        // Initialize the previews
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview('resumeName', 'previewResumeName');
+            updatePreview('resumeTitle', 'previewResumeTitle');
+            updatePreview('resumeEmail', 'previewResumeEmail', true);
+            updatePreview('resumePhone', 'previewResumePhone', true);
+            updatePreview('resumeAddress', 'previewResumeAddress');
+            updatePreview('resumeLinkedIn', 'previewResumeLinkedIn', true);
+            updatePreview('resumeGitHub', 'previewResumeGitHub', true);
+            updatePreview('resumeSummary', 'previewResumeSummary');
+            
+            // Trigger updates for all sections
+            const firstExperienceInput = document.querySelector('.experience-item input');
+            if (firstExperienceInput) updateExperiencePreview(firstExperienceInput);
+            
+            const firstEducationInput = document.querySelector('.education-item input');
+            if (firstEducationInput) updateEducationPreview(firstEducationInput);
+            
+            const firstProjectInput = document.querySelector('.project-item input');
+            if (firstProjectInput) updateProjectPreview(firstProjectInput);
+            
+            const firstCertificationInput = document.querySelector('.certification-item input');
+            if (firstCertificationInput) updateCertificationPreview(firstCertificationInput);
+            
+            const firstAchievementInput = document.querySelector('.achievement-item input');
+            if (firstAchievementInput) updateAchievementPreview(firstAchievementInput);
+            
+            updateSkillsPreview();
+        });
+        
+        // Button functionality (placeholder)
+        document.getElementById('saveResume').addEventListener('click', function() {
+            alert('Resume saved successfully!');
+        });
+        
+        document.getElementById('downloadResume').addEventListener('click', function() {
+            alert('This would download your resume as a PDF in a real implementation.');
+        });
+        
+        document.getElementById('analyzeResume').addEventListener('click', function() {
+            alert('This would analyze your resume for ATS compatibility in a real implementation.');
+        });
+        
+        document.getElementById('shareResume').addEventListener('click', function() {
+            alert('This would generate a shareable link in a real implementation.');
+        });
+    </script>
+</body>
+</html>

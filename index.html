@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Generator | Create Stunning Portfolios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), 
+                        url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: rgba(21, 41, 71, 0.9);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #64ffda;
+            display: inline-block;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            float: right;
+        }
+        
+        nav ul li a {
+            color: #ccd6f6;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: #64ffda;
+        }
+        
+        .hero {
+            padding: 120px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #e6f1ff;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #8892b0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .btn-primary {
+            background-color: #0a192f;
+            color: #64ffda;
+            border: 1px solid #64ffda;
+        }
+        
+        .btn-primary:hover {
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: #64ffda;
+            color: #0a192f;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #52e0c4;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #e6f1ff;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .template-card {
+            background: rgba(21, 41, 71, 0.7);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .template-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .template-placeholder {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .template-placeholder::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 25, 47, 0.6);
+        }
+        
+        .template-placeholder i {
+            z-index: 1;
+            color: #64ffda;
+        }
+        
+        .template-content {
+            padding: 20px;
+        }
+        
+        .template-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #e6f1ff;
+        }
+        
+        .template-content p {
+            color: #8892b0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 30px;
+            background: rgba(21, 41, 71, 0.7);
+            border-radius: 8px;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: #64ffda;
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #e6f1ff;
+        }
+        
+        .feature p {
+            color: #8892b0;
+            line-height: 1.6;
+        }
+        
+        footer {
+            background-color: rgba(10, 25, 47, 0.9);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        footer p {
+            color: #8892b0;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            color: #ccd6f6;
+            font-size: 1.3rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: #64ffda;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">PortfolioGen</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Create Your Professional Portfolio in Minutes</h1>
+            <p>Stand out from the crowd with our stunning, job-winning portfolio templates</p>
+            <div class="cta-buttons">
+                <a href="#templates" class="btn btn-primary">Get Started</a>
+                <a href="resume-builder.html" class="btn btn-secondary">Build ATS-Friendly Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="templates" class="templates-section">
+        <div class="container">
+            <h2>Choose Your Profession</h2>
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-placeholder" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="template-content">
+                        <h3>Student Portfolio</h3>
+                        <p>Perfect for students showcasing academic achievements and projects</p>
+                        <a href="templates/student.html" class="btn btn-primary">View Template</a>
+                    </div>
+                </div>
+                <div class="template-card">
+                    <div class="template-placeholder" style="background-image: url('https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="template-content">
+                        <h3>Chef Portfolio</h3>
+                        <p>Showcase your culinary skills and experience in style</p>
+                        <a href="templates/chef.html" class="btn btn-primary">View Template</a>
+                    </div>
+                </div>
+                <div class="template-card">
+                    <div class="template-placeholder" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <div class="template-content">
+                        <h3>Writer Portfolio</h3>
+                        <p>Display your writing samples and publications professionally</p>
+                        <a href="templates/writer.html" class="btn btn-primary">View Template</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Our Portfolio Generator?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-magic"></i>
+                    <h3>Stunning Templates</h3>
+                    <p>Professionally designed templates that impress recruiters and clients alike</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>ATS-Friendly Resume</h3>
+                    <p>Resumes optimized to pass through Applicant Tracking Systems</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-edit"></i>
+                    <h3>Easy Customization</h3>
+                    <p>Intuitive editor with live preview for real-time changes</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-download"></i>
+                    <h3>Download & Share</h3>
+                    <p>Multiple export options including PDF and shareable links</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 PortfolioGen. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

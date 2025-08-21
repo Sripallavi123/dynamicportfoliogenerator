@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Portfolio Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), 
+                        url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: rgba(21, 41, 71, 0.9);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #64ffda;
+            display: inline-block;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            float: right;
+        }
+        
+        nav ul li a {
+            color: #ccd6f6;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            color: #64ffda;
+        }
+        
+        .auth-section {
+            padding: 80px 0;
+        }
+        
+        .auth-form {
+            background: rgba(21, 41, 71, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .auth-form h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #e6f1ff;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccd6f6;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            background: rgba(10, 25, 47, 0.7);
+            color: #e6f1ff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #64ffda;
+            box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        .remember-me label {
+            color: #ccd6f6;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-password {
+            color: #64ffda;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: #64ffda;
+            color: #0a192f;
+        }
+        
+        .btn-primary:hover {
+            background-color: #52e0c4;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #8892b0;
+        }
+        
+        .auth-footer a {
+            color: #64ffda;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-login {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .social-login p {
+            color: #8892b0;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            display: inline-block;
+            width: 30%;
+            height: 1px;
+            background: rgba(100, 255, 218, 0.2);
+            position: absolute;
+            top: 50%;
+        }
+        
+        .social-login p::before {
+            left: 0;
+        }
+        
+        .social-login p::after {
+            right: 0;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-social {
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-social i {
+            font-size: 1rem;
+        }
+        
+        .btn-social.google {
+            background-color: #4285F4;
+            color: white;
+        }
+        
+        .btn-social.google:hover {
+            background-color: #357ae8;
+        }
+        
+        .btn-social.facebook {
+            background-color: #4267B2;
+            color: white;
+        }
+        
+        .btn-social.facebook:hover {
+            background-color: #365899;
+        }
+        
+        .btn-social.linkedin {
+            background-color: #0077B5;
+            color: white;
+        }
+        
+        .btn-social.linkedin:hover {
+            background-color: #006097;
+        }
+        
+        footer {
+            background-color: rgba(10, 25, 47, 0.9);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        footer p {
+            color: #8892b0;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            color: #ccd6f6;
+            font-size: 1.3rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: #64ffda;
+        }
+        
+        @media (max-width: 768px) {
+            .social-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-social {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">PortfolioGen</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html" class="active">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-form">
+                <h2>Login to Your Account</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="register.html">Register here</a></p>
+                </div>
+                <div class="social-login">
+                    <p>Or login with:</p>
+                    <div class="social-buttons">
+                        <button class="btn-social google" onclick="window.location.href='/auth/google'">
+                            <i class="fab fa-google"></i> Google
+                        </button>
+                        <button class="btn-social facebook" onclick="window.location.href='/auth/facebook'">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </button>
+                        <button class="btn-social linkedin" onclick="window.location.href='/auth/linkedin'">
+                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 PortfolioGen. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your login logic here
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            console.log('Login attempt with:', { email, password, remember });
+            // In a real app, you would send this to your backend
+            alert('Login functionality would be implemented here');
+        });
+        
+        // Social login functions (would be connected to your authentication system)
+        function googleLogin() {
+            console.log('Redirecting to Google OAuth');
+            // window.location.href = '/auth/google';
+        }
+        
+        function facebookLogin() {
+            console.log('Redirecting to Facebook OAuth');
+            // window.location.href = '/auth/facebook';
+        }
+        
+        function linkedinLogin() {
+            console.log('Redirecting to LinkedIn OAuth');
+            // window.location.href = '/auth/linkedin';
+        }
+    </script>
+</body>
+</html>
