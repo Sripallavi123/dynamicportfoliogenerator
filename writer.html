@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writer Portfolio | PortfolioGen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        body {
+            background: #f9fafb;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        :root {
+            --primary-color: #9b59b6;
+            --secondary-color: #8e44ad;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .template-header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .template-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            color: #333;
+            cursor: pointer;
+        }
+        .template-header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        .template-header nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .template-header nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        .writer-slide {
+            background-color: #f9f0ff;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            color: #fff;
+            font-family: 'Merriweather', serif;
+        }
+        .writer-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .writer-slide > * {
+            position: relative;
+            z-index: 2;
+        }
+        .writer-slide h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .writer-slide h2 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 4px solid var(--primary-color);
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            loading: lazy;
+        }
+        .section-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .section-item p, .section-item span, .section-item li, .section-item ul {
+            color: #333;
+        }
+        .section-item h3 {
+            color: var(--primary-color);
+        }
+        .section-item h4 {
+            color: var(--secondary-color);
+        }
+        .publication-item {
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        .writing-sample {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 1.5rem;
+        }
+        .writing-sample p, .writing-sample span, .writing-sample li, .writing-sample ul {
+            color: #333;
+        }
+        .writing-sample h3 {
+            color: var(--primary-color);
+        }
+        .writing-sample h4 {
+            color: var(--secondary-color);
+        }
+        .slide {
+            display: none;
+            height: 80vh;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+        .slide.active {
+            display: block;
+        }
+        .slide-content {
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .slide-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 3;
+        }
+        .slide-nav button {
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+        .slide-nav button:hover, .slide-nav button:focus {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        #slide1 { background-image: url('https://images.unsplash.com/photo-1516979187457-637abb4f6083'); } /* Typewriter */
+        #slide2 { background-image: url('https://images.unsplash.com/photo-1547041436-5c5b0146b9a0'); } /* Books */
+        #slide3 { background-image: url('https://images.unsplash.com/photo-1512820790803-83ca734da794'); } /* Library */
+        #slide4 { background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7275f58'); } /* Writing desk */
+        #slide5 { background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a'); } /* Notebook */
+        #slide6 { background-image: url('https://images.unsplash.com/photo-1506884864968-66a8e04f57b6'); } /* Pen and paper */
+        #slide7 { background-image: url('https://images.unsplash.com/photo-1533327325824-76bc4e62d560'); } /* Coffee and books */
+        #slide8 { background-image: url('https://images.unsplash.com/photo-1491841573634-28140fc7b990'); } /* Reading nook */
+        #slide9 { background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b'); } /* Open book */
+        #slide10 { background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f'); } /* Bookstack */
+        @media (max-width: 768px) {
+            .slide-content {
+                max-width: 95%;
+            }
+            .slide-nav button {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .writer-slide h1 {
+                font-size: 2rem;
+            }
+            .writer-slide h2 {
+                font-size: 1.5rem;
+            }
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="template-header" role="navigation" aria-label="Portfolio navigation">
+        <div class="container">
+            <h1 class="logo">PortfolioGen</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#" id="editBtn"><i class="fas fa-edit"></i> Edit</a></li>
+                    <li><a href="#" id="downloadBtn"><i class="fas fa-download"></i> PDF</a></li>
+                    <li><a href="#" id="shareBtn"><i class="fas fa-share-alt"></i> Share</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div id="slides-container" role="region" aria-live="polite">
+        <!-- Slide 1: Introduction -->
+        <div class="slide writer-slide active" id="slide1">
+            <div class="slide-content">
+                <div class="profile-image">
+                    <img src="https://via.placeholder.com/150" alt="Writer Profile" id="profileImg" loading="lazy">
+                </div>
+                <h1 contenteditable="true" id="writerName">Emily Carter</h1>
+                <h2 contenteditable="true" id="writerTitle">Freelance Writer & Editor</h2>
+                <p contenteditable="true" id="writerBio">Award-winning writer with 8 years of experience crafting compelling content across multiple genres. Specializing in long-form journalism and creative nonfiction.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: About -->
+        <div class="slide writer-slide" id="slide2">
+            <div class="slide-content">
+                <h1><i class="fas fa-user"></i> About</h1>
+                <div class="section-item">
+                    <p contenteditable="true">I am a storyteller passionate about capturing the human experience through words. My work blends research, creativity, and empathy to engage and inspire readers.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Education -->
+        <div class="slide writer-slide" id="slide3">
+            <div class="slide-content">
+                <h1><i class="fas fa-graduation-cap"></i> Education</h1>
+                <div class="section-item">
+                    <h3 contenteditable="true">M.A. in Creative Writing</h3>
+                    <h4 contenteditable="true">University of Literature | 2010 - 2012</h4>
+                    <p contenteditable="true">Thesis: Narrative Nonfiction in Modern Journalism</p>
+                    <h3 contenteditable="true">B.A. in English</h3>
+                    <h4 contenteditable="true">State College | 2006 - 2010</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Skills -->
+        <div class="slide writer-slide" id="slide4">
+            <div class="slide-content">
+                <h1><i class="fas fa-pen-fancy"></i> Skills</h1>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <span contenteditable="true">Long-form Journalism</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 95%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span contenteditable="true">Creative Nonfiction</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span contenteditable="true">Content Editing</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span contenteditable="true">Research</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span contenteditable="true">SEO Writing</span>
+                        <div class="skill-bar">
+                            <div class="skill-level" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Projects (Publications/Writing Samples) -->
+        <div class="slide writer-slide" id="slide5">
+            <div class="slide-content">
+                <h1><i class="fas fa-book"></i> Writing Projects</h1>
+                <div class="publication-item">
+                    <h3 contenteditable="true">The Last Lightkeeper</h3>
+                    <h4 contenteditable="true">The Atlantic | June 2020</h4>
+                    <p contenteditable="true">A narrative about the last lighthouse keeper on the Maine coast.</p>
+                </div>
+                <div class="writing-sample">
+                    <h3 contenteditable="true">Excerpt from 'Urban Echoes'</h3>
+                    <p contenteditable="true">The city never sleeps, but it does change its rhythm...</p>
+                    <p><em contenteditable="true">Harper's Magazine, March 2019</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Achievements/Certifications -->
+        <div class="slide writer-slide" id="slide6">
+            <div class="slide-content">
+                <h1><i class="fas fa-trophy"></i> Achievements/Certifications</h1>
+                <div class="section-item">
+                    <ul>
+                        <li contenteditable="true">National Magazine Award for Feature Writing, 2020</li>
+                        <li contenteditable="true">Certificate in Digital Content Strategy, 2018</li>
+                        <li contenteditable="true">Regional Journalism Award, 2016</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Internships/Experience -->
+        <div class="slide writer-slide" id="slide7">
+            <div class="slide-content">
+                <h1><i class="fas fa-briefcase"></i> Experience</h1>
+                <div class="section-item">
+                    <h3 contenteditable="true">Senior Editor</h3>
+                    <h4 contenteditable="true">Literary Review | 2016 - 2021</h4>
+                    <ul>
+                        <li contenteditable="true">Managed team of 5 editors</li>
+                        <li contenteditable="true">Increased readership by 40%</li>
+                    </ul>
+                </div>
+                <div class="section-item">
+                    <h3 contenteditable="true">Staff Writer</h3>
+                    <h4 contenteditable="true">City Magazine | 2013 - 2016</h4>
+                    <ul>
+                        <li contenteditable="true">Produced 3-5 feature articles per month</li>
+                        <li contenteditable="true">Won awards for investigative reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Goals -->
+        <div class="slide writer-slide" id="slide8">
+            <div class="slide-content">
+                <h1><i class="fas fa-bullseye"></i> Goals</h1>
+                <div class="section-item">
+                    <ul>
+                        <li contenteditable="true">Publish a debut novel by 2027</li>
+                        <li contenteditable="true">Teach creative writing workshops</li>
+                        <li contenteditable="true">Expand into podcast storytelling</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Interests -->
+        <div class="slide writer-slide" id="slide9">
+            <div class="slide-content">
+                <h1><i class="fas fa-heart"></i> Interests</h1>
+                <div class="section-item">
+                    <ul>
+                        <li contenteditable="true">Literary fiction</li>
+                        <li contenteditable="true">Documentary filmmaking</li>
+                        <li contenteditable="true">Hiking and nature photography</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Contact Info -->
+        <div class="slide writer-slide" id="slide10">
+            <div class="slide-content">
+                <h1><i class="fas fa-address-book"></i> Contact Info</h1>
+                <div class="section-item">
+                    <p><i class="fas fa-envelope"></i> <span contenteditable="true">emily@example.com</span></p>
+                    <p><i class="fas fa-phone"></i> <span contenteditable="true">(555) 987-6543</span></p>
+                    <p><i class="fab fa-twitter"></i> <span contenteditable="true">twitter.com/emilywrites</span></p>
+                    <p><i class="fas fa-globe"></i> <span contenteditable="true">emilycarterwriter.com</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-nav">
+            <button onclick="prevSlide()" aria-label="Previous slide">←</button>
+            <button onclick="nextSlide()" aria-label="Next slide">→</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('#slides-container .slide');
+
+        function showSlide(index) {
+            if (index >= slides.length) index = 0;
+            if (index < 0) index = slides.length - 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.getElementById('editBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    try {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            document.getElementById('profileImg').src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    } catch (error) {
+                        console.error('Image upload failed:', error);
+                        alert('Failed to upload image. Please try again.');
+                    }
+                }
+            };
+            fileInput.click();
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            try {
+                const element = document.getElementById('slides-container');
+                // Make all slides visible for PDF
+                slides.forEach(slide => {
+                    slide.style.display = 'block';
+                    slide.style.pageBreakAfter = 'always';
+                    slide.style.height = 'auto';
+                });
+                const opt = {
+                    margin: 10,
+                    filename: 'writer-portfolio.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().set(opt).from(element).save().then(() => {
+                    // Restore slide visibility
+                    slides.forEach((slide, index) => {
+                        slide.style.display = index === currentSlide ? 'block' : 'none';
+                        slide.style.pageBreakAfter = '';
+                        slide.style.height = '80vh';
+                    });
+                });
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('Failed to generate PDF. Please try again.');
+                // Restore slide visibility in case of error
+                slides.forEach((slide, index) => {
+                    slide.style.display = index === currentSlide ? 'block' : 'none';
+                    slide.style.pageBreakAfter = '';
+                    slide.style.height = '80vh';
+                });
+            }
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            try {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Writer Portfolio',
+                        text: 'Check out my writing portfolio',
+                        url: window.location.href
+                    }).catch(err => {
+                        console.error('Share error:', err);
+                        alert('Error sharing: ' + err);
+                    });
+                } else {
+                    alert('Web Share API not supported in your browser. Please host the file and share the URL manually.');
+                }
+            } catch (error) {
+                console.error('Share failed:', error);
+                alert('Failed to share portfolio. Please try again.');
+            }
+        });
+
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.addEventListener('focus', function() {
+                this.style.backgroundColor = '#fffde7';
+                this.style.outline = 'none';
+            });
+            el.addEventListener('blur', function() {
+                this.style.backgroundColor = '';
+            });
+        });
+    </script>
+</body>
+</html>

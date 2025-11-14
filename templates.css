@@ -1,0 +1,95 @@
+/* Student Template Specific Styles */
+.student-template {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.student-template .portfolio-header {
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+    padding: 2rem;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.student-template .profile-info h1,
+.student-template .profile-info h2 {
+    color: white;
+}
+
+.student-template .profile-info p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.student-template .portfolio-section h2 {
+    color: #3498db;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.student-template .skill-level {
+    background: #3498db;
+}
+
+/* Chef Template Specific Styles */
+.chef-template {
+    font-family: 'Playfair Display', serif;
+    color: #333;
+}
+
+.chef-template .portfolio-header {
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+    padding: 2rem;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.chef-template .profile-info h1,
+.chef-template .profile-info h2 {
+    color: white;
+}
+
+.chef-template .profile-info p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.chef-template .portfolio-section h2 {
+    color: #e74c3c;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.chef-template .skill-level {
+    background: #e74c3c;
+}
+
+/* Writer Template Specific Styles */
+.writer-template {
+    font-family: 'Merriweather', serif;
+    color: #333;
+}
+
+.writer-template .portfolio-header {
+    background: linear-gradient(135deg, #9b59b6, #34495e);
+    padding: 2rem;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.writer-template .profile-info h1,
+.writer-template .profile-info h2 {
+    color: white;
+}
+
+.writer-template .profile-info p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.writer-template .portfolio-section h2 {
+    color: #9b59b6;
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.writer-template .skill-level {
+    background: #9b59b6;
+}
